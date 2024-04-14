@@ -1595,13 +1595,18 @@ static void setstringconstants()
   time_t now;
   char timebuf[sizeof("11:22:33")];
   char datebuf[sizeof("10 Jan 2017")];
+  char compile_time[sizeof("[14.Apr.2024 | 17:55:00]")];
 
   assert(sc_status!=statIDLE);
   add_builtin_string_constant("__file","",sGLOBAL);
 
   now = time(NULL);
+  strftime(compile_time,sizeof(compile_time),"[%d.%b.%Y | %H:%M:%S]",localtime(&now));
+  add_builtin_string_constant("__compile_time", compile_time, sGLOBAL);
+
   strftime(timebuf,sizeof(timebuf),"%H:%M:%S",localtime(&now));
   add_builtin_string_constant("__time",timebuf,sGLOBAL);
+
   strftime(datebuf,sizeof(datebuf),"%d %b %Y",localtime(&now));
   add_builtin_string_constant("__date",datebuf,sGLOBAL);
 }
